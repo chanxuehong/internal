@@ -15,7 +15,7 @@ func init() {
 
 var zeroMAC [8]byte
 
-func getMAC() (MAC [6]byte) {
+func getMAC() (mac [6]byte) {
 	interfaces, err := net.Interfaces()
 	if err != nil {
 		return genMAC()
@@ -32,14 +32,14 @@ func getMAC() (MAC [6]byte) {
 			if bytes.Equal(itf.HardwareAddr, zeroMAC[:6]) {
 				continue
 			}
-			copy(MAC[:], itf.HardwareAddr)
+			copy(mac[:], itf.HardwareAddr)
 			return
 		case 8: // EUI-64
 			if bytes.Equal(itf.HardwareAddr, zeroMAC[:]) {
 				continue
 			}
-			copy(MAC[:3], itf.HardwareAddr)
-			copy(MAC[3:], itf.HardwareAddr[5:])
+			copy(mac[:3], itf.HardwareAddr)
+			copy(mac[3:], itf.HardwareAddr[5:])
 			return
 		}
 	}
@@ -47,8 +47,8 @@ func getMAC() (MAC [6]byte) {
 	return genMAC()
 }
 
-func genMAC() (MAC [6]byte) {
-	rand.Read(MAC[:])
-	MAC[0] |= 0x01 // multicast
+func genMAC() (mac [6]byte) {
+	rand.Read(mac[:])
+	mac[0] |= 0x01 // multicast
 	return
 }
