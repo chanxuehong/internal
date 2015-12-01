@@ -7,11 +7,7 @@ import (
 	"github.com/chanxuehong/rand"
 )
 
-var MAC [6]byte // One MAC of this machine; Particular case, it is a random bytes.
-
-func init() {
-	MAC = getMAC()
-}
+var MAC [6]byte = getMAC() // One MAC of this machine; Particular case, it is a random bytes.
 
 var zeroMAC [8]byte
 
