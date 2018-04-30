@@ -26,34 +26,34 @@ func getMAC() (mac [6]byte) {
 			continue
 		}
 
-		switch len(itf.HardwareAddr) {
+		switch hardwareAddr := itf.HardwareAddr; len(hardwareAddr) {
 		case 6: // MAC-48, EUI-48
-			if bytes.Equal(itf.HardwareAddr, zeroMAC[:6]) {
+			if bytes.Equal(hardwareAddr, zeroMAC[:6]) {
 				continue
 			}
 			if itf.Flags&net.FlagUp == 0 {
 				if !found {
-					copy(mac[:], itf.HardwareAddr)
+					copy(mac[:], hardwareAddr)
 					found = true
 				}
 				continue
 			}
-			copy(mac[:], itf.HardwareAddr)
+			copy(mac[:], hardwareAddr)
 			return
 		case 8: // EUI-64
-			if bytes.Equal(itf.HardwareAddr, zeroMAC[:]) {
+			if bytes.Equal(hardwareAddr, zeroMAC[:]) {
 				continue
 			}
 			if itf.Flags&net.FlagUp == 0 {
 				if !found {
-					copy(mac[:3], itf.HardwareAddr)
-					copy(mac[3:], itf.HardwareAddr[5:])
+					copy(mac[:3], hardwareAddr)
+					copy(mac[3:], hardwareAddr[5:])
 					found = true
 				}
 				continue
 			}
-			copy(mac[:3], itf.HardwareAddr)
-			copy(mac[3:], itf.HardwareAddr[5:])
+			copy(mac[:3], hardwareAddr)
+			copy(mac[3:], hardwareAddr[5:])
 			return
 		}
 	}
